@@ -47,31 +47,39 @@ function attr(element, attribute, value = null) {
         element.setAttribute(attribute, value);
 }
 
-function children(element){
+function children(element) {
     return element.childNodes;
 }
 
-function empty(element){
+function empty(element) {
     element.innerHTML = null;
 }
 
-function css(element, property, value = null){
-    if (value == null){
+function css(element, property, value = null) {
+    if (value == null) {
         let styles = window.getComputedStyle(element);
         return styles.getPropertyValue(property);
     }
-    else{
+    else {
         element.setAttribute(property, value);
     }
 }
 
-function click(element, func){
+function click(element, func) {
     element.addEventListener('click', func, false);
 }
 
-function wrap(element, tags){
+function toggle(element) {
+    if (element.style.visibility !== "hidden") {
+        element.style.visibility = "hidden";
+    } else {
+        element.style.visibility = "visible";
+    }
+}
+
+function wrap(element, tags) {
     let startTagsIndex = tags.indexOf('/') - 1;
-    element.outerHTML = tags.substr(0, startTagsIndex) + element.parentNode.innerHTML + tags.substr(startTagsIndex -1 , tags.length);
+    element.outerHTML = tags.substr(0, startTagsIndex) + element.parentNode.innerHTML + tags.substr(startTagsIndex - 1, tags.length);
 }
 
 function $(sel) {
@@ -83,12 +91,12 @@ class JQR {
         this.elements = document.querySelectorAll(sel);
     }
 
-    addClass(classToAdd){
+    addClass(classToAdd) {
         for (let i = 0; i < this.elements.length; i++)
             addClass(this.elements[i], classToAdd);
     }
 
-    removeClass(classToRemove){
+    removeClass(classToRemove) {
         for (let i = 0; i < this.elements.length; i++)
             removeClass(this.elements[i], classToRemove);
     }
@@ -98,57 +106,57 @@ class JQR {
             append(this.elements[i], stuffToAppend);
     }
 
-    remove(stuffToRemove = null){
+    remove(stuffToRemove = null) {
         for (let i = 0; i < this.elements.length; i++)
             remove(this.elements[i], stuffToRemove);
     }
 
-    text(){
+    text() {
         let txt = "";
-        for (let i = 0; i < this.elements.length; i++){
+        for (let i = 0; i < this.elements.length; i++) {
             txt += text(this.elements[i]);
         }
         return txt;
     }
 
-    attr(attribute, value = null){
+    attr(attribute, value = null) {
         for (let i = 0; i < this.elements.length; i++)
             attr(this.elements[i], attribute, value);
     }
 
-    children(){
+    children() {
         let elem;
         for (let i = 0; i < this.elements.length; i++)
             elem += children(this.elements[i]);
         return elem;
     }
 
-    empty(){
+    empty() {
         for (let i = 0; i < this.elements.length; i++)
             empty(this.elements[i]);
     }
 
-    css(property, value=null){
-        if (value == null){
+    css(property, value = null) {
+        if (value == null) {
             let styles = "";
             for (let i = 0; i < this.elements.length; i++)
                 styles += css(this.elements[i], property);
             return styles
-        }else{
+        } else {
             css(this.elements[i], property, value);
         }
     }
 
-    click(func){
+    click(func) {
         for (let i = 0; i < this.elements.length; i++)
             click(this.elements[i], func);
     }
-    
-    each(func){
+
+    each(func) {
         this.elements.forEach(func);
     }
 
-    wrap(tags){
+    wrap(tags) {
         for (let i = 0; i < this.elements.length; i++)
             wrapper(this.elements[i], tags);
     }
