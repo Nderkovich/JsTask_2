@@ -10,7 +10,6 @@ function append(element, stuffToAppend) {
     return element.innerHTML += stuffToAppend;
 }
 
-/* ????? */
 function remove(element, stuffToRemove = null) {
     if (stuffToRemove) {
         for (let i = 0; i <= stuffToRemove.length; i++) {
@@ -24,8 +23,8 @@ function remove(element, stuffToRemove = null) {
 
 function text(element) {
     (function rec(el) {
-        var childs = el.childNodes, i = childs.length;
-        var str = "";
+        let childs = el.childNodes, i = childs.length;
+        let str = "";
         while (i--) {
             console.log
             if (childs[i].nodeType === 1) {
@@ -58,7 +57,7 @@ function empty(element){
 
 function css(element, property, value = null){
     if (value == null){
-        var styles = window.getComputedStyle(element);
+        let styles = window.getComputedStyle(element);
         return styles.getPropertyValue(property);
     }
     else{
@@ -68,6 +67,11 @@ function css(element, property, value = null){
 
 function click(element, func){
     element.addEventListener('click', func, false);
+}
+
+function wrap(element, tags){
+    let startTagsIndex = tags.indexOf('/') - 1;
+    element.outerHTML = tags.substr(0, startTagsIndex) + element.parentNode.innerHTML + tags.substr(startTagsIndex -1 , tags.length);
 }
 
 function $(sel) {
@@ -80,68 +84,72 @@ class JQR {
     }
 
     addClass(classToAdd){
-        for (var i = 0; i < this.elements.length; i++)
+        for (let i = 0; i < this.elements.length; i++)
             addClass(this.elements[i], classToAdd);
     }
 
     removeClass(classToRemove){
-        for (var i = 0; i < this.elements.length; i++)
+        for (let i = 0; i < this.elements.length; i++)
             removeClass(this.elements[i], classToRemove);
     }
 
     append(stuffToAppend) {
-        for (var i = 0; i < this.elements.length; i++)
+        for (let i = 0; i < this.elements.length; i++)
             append(this.elements[i], stuffToAppend);
     }
 
     remove(stuffToRemove = null){
-        for (var i = 0; i < this.elements.length; i++)
+        for (let i = 0; i < this.elements.length; i++)
             remove(this.elements[i], stuffToRemove);
     }
 
     text(){
-        var txt = "";
-        for (var i = 0; i < this.elements.length; i++){
+        let txt = "";
+        for (let i = 0; i < this.elements.length; i++){
             txt += text(this.elements[i]);
         }
         return txt;
     }
 
+    attr(attribute, value = null){
+        for (let i = 0; i < this.elements.length; i++)
+            attr(this.elements[i], attribute, value);
+    }
+
+    children(){
+        let elem;
+        for (let i = 0; i < this.elements.length; i++)
+            elem += children(this.elements[i]);
+        return elem;
+    }
+
+    empty(){
+        for (let i = 0; i < this.elements.length; i++)
+            empty(this.elements[i]);
+    }
+
     css(property, value=null){
         if (value == null){
-            var styles = "";
-            for (var i = 0; i < this.elements.length; i++)
+            let styles = "";
+            for (let i = 0; i < this.elements.length; i++)
                 styles += css(this.elements[i], property);
             return styles
         }else{
             css(this.elements[i], property, value);
         }
     }
+
+    click(func){
+        for (let i = 0; i < this.elements.length; i++)
+            click(this.elements[i], func);
+    }
     
     each(func){
         this.elements.forEach(func);
     }
 
-    click(func){
-        for (var i = 0; i < this.elements.length; i++)
-            click(this.elements[i], func);
-    }
-
-    attr(attribute, value = null){
-        for (var i = 0; i < this.elements.length; i++)
-            attr(this.elements[i], attribute, value);
-    }
-
-    children(){
-        var elem;
-        for (var i = 0; i < this.elements.length; i++)
-            elem += children(this.elements[i]);
-        return elem;
-    }
-
-
-    empty(){
-        for (var i = 0; i < this.elements.length; i++)
-            empty(this.elements[i]);
+    wrap(tags){
+        for (let i = 0; i < this.elements.length; i++)
+            wrapper(this.elements[i], tags);
     }
 }
