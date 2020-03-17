@@ -6,32 +6,27 @@ function removeClass(element, classToRemove) {
     return element.className = element.className.replace(classToRemove, "").trim();
 }
 
-function append(element, stuffToAppend) {
-    return element.innerHTML += stuffToAppend;
+function append(element, addableElements) {
+    return element.innerHTML += addableElements;
 }
 
-function remove(element, stuffToRemove = null) {
-    if (stuffToRemove) {
-        for (let i = 0; i <= stuffToRemove.length; i++) {
-            element.removeChild(stuffToRemove[i]);
-        }
-    }
-    else {
+function remove(element, removeableElements = null) {
+    if (removeableElements) {
+        removeableElements.forEach(element => element.removeChild(element))
+    } else {
         return element.remove();
     }
 }
 
 function text(element) {
     (function rec(el) {
-        let childs = el.childNodes, i = childs.length;
+        let childs = el.childNodes;
+        let i = childs.length;
         let str = "";
         while (i--) {
-            console.log
             if (childs[i].nodeType === 1) {
                 str += rec(childs[i]);
             } else {
-                console.log(childs[i]);
-                console.log(childs[i].nodeValue);
                 str += childs[i].nodeValue;
             }
         }
@@ -40,11 +35,11 @@ function text(element) {
 }
 
 function attr(element, attribute, value = null) {
-    if (value == null) {
+    if (value === null) {
         return element.getAttribute(attribute);
-    }
-    else
+    } else {
         element.setAttribute(attribute, value);
+    }
 }
 
 function children(element) {
@@ -56,11 +51,10 @@ function empty(element) {
 }
 
 function css(element, property, value = null) {
-    if (value == null) {
+    if (value === null) {
         let styles = window.getComputedStyle(element);
         return styles.getPropertyValue(property);
-    }
-    else {
+    } else {
         element.setAttribute(property, value);
     }
 }
@@ -79,7 +73,7 @@ function toggle(element) {
 
 function wrap(element, tags) {
     let startTagsIndex = tags.indexOf('/') - 1;
-    element.outerHTML = tags.substr(0, startTagsIndex) + element.parentNode.innerHTML + tags.substr(startTagsIndex - 1, tags.length);
+    element.outerHTML = `${tags.substr(0, startTagsIndex)}${element.parentNode.innerHTML}${tags.substr(startTagsIndex - 1, tags.length)}`;
 }
 
 function $(sel) {
@@ -92,23 +86,19 @@ class JQR {
     }
 
     addClass(classToAdd) {
-        for (let i = 0; i < this.elements.length; i++)
-            addClass(this.elements[i], classToAdd);
+        this.elements.forEach(element => addClass(element, classToAdd));
     }
 
     removeClass(classToRemove) {
-        for (let i = 0; i < this.elements.length; i++)
-            removeClass(this.elements[i], classToRemove);
+        this.elements.forEach(element => removeClass(element, classToRemove));
     }
 
-    append(stuffToAppend) {
-        for (let i = 0; i < this.elements.length; i++)
-            append(this.elements[i], stuffToAppend);
+    append(addableElements) {
+        this.elements.forEach(element => addClass(element, addableElements));
     }
 
-    remove(stuffToRemove = null) {
-        for (let i = 0; i < this.elements.length; i++)
-            remove(this.elements[i], stuffToRemove);
+    remove(removeableElements = null) {
+        this.elements.forEach(element => remove(element, removeableElements));
     }
 
     text() {
@@ -120,8 +110,7 @@ class JQR {
     }
 
     attr(attribute, value = null) {
-        for (let i = 0; i < this.elements.length; i++)
-            attr(this.elements[i], attribute, value);
+        this.elements.forEach(element => attr(element, attribute, value));
     }
 
     children() {
@@ -132,12 +121,11 @@ class JQR {
     }
 
     empty() {
-        for (let i = 0; i < this.elements.length; i++)
-            empty(this.elements[i]);
+        this.elements.forEach(element => empty(element));
     }
 
     css(property, value = null) {
-        if (value == null) {
+        if (value === null) {
             let styles = "";
             for (let i = 0; i < this.elements.length; i++)
                 styles += css(this.elements[i], property);
@@ -148,8 +136,7 @@ class JQR {
     }
 
     click(func) {
-        for (let i = 0; i < this.elements.length; i++)
-            click(this.elements[i], func);
+        this.elements.forEach(element => click(element, func));
     }
 
     each(func) {
@@ -157,7 +144,6 @@ class JQR {
     }
 
     wrap(tags) {
-        for (let i = 0; i < this.elements.length; i++)
-            wrapper(this.elements[i], tags);
+        this.elements.forEach(element => wrap(element, tags));
     }
 }
